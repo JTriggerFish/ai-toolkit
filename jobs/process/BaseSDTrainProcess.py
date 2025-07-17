@@ -109,7 +109,7 @@ import hashlib
 from toolkit.util.blended_blur_noise import get_blended_blur_noise
 from toolkit.util.get_model import get_model_class
 
-
+rarr = "\u2192"
 # ------------------------------------------------------------------
 # Linear / Cosine warm-up helper used for double-block LR ramp
 def _make_ramp_fn(
@@ -607,7 +607,7 @@ class BaseSDTrainProcess(BaseTrainProcess):
             if global_step % 5 == 0:
                 print_acc(
                     f"[DEBUG-ramp] step {global_step:7d} | group {i:02d} | "
-                    f"{old_lr:.4e} → {new_lr:.4e}"
+                    f"{old_lr:.4e} {rarr} {new_lr:.4e}"
                 )
 
     # =========================================
@@ -936,9 +936,9 @@ class BaseSDTrainProcess(BaseTrainProcess):
             pat = m.group(0) if m else "<unknown>"
             found[pat].append(gi)
 
-        print_acc("── pattern → optimiser group index ──")
+        print_acc("── pattern {rarr} optimiser group index ──")
         for pat in sorted(found):
-            print_acc(f"{pat:<24} → {found[pat]}")
+            print_acc(f"{pat:<24} {rarr} {found[pat]}")
         print_acc(f"total ramp groups = {sum(len(v) for v in found.values())}")
         # ──────────────────────────────────────────────────────────────────
 
@@ -2100,7 +2100,7 @@ class BaseSDTrainProcess(BaseTrainProcess):
                             handled_set.update(matched)
 
                             print_acc(
-                                f"[LR-MAP] {pattern:<40} → lr = {init_lr:.3e}  "
+                                f"[LR-MAP] {pattern:<40} {rarr} lr = {init_lr:.3e}  "
                                 f"({len(matched)} params)"
                             )
 
@@ -2118,7 +2118,7 @@ class BaseSDTrainProcess(BaseTrainProcess):
                     if remaining:
                         new_groups.append({"params": remaining, "lr": base_lr})
                         print_acc(
-                            f"[LR-MAP] <default other-LoRA-params>           → lr = {base_lr:.3e}  "
+                            f"[LR-MAP] <default other-LoRA-params>           {rarr} lr = {base_lr:.3e}  "
                             f"({len(remaining)} params)"
                         )
 
